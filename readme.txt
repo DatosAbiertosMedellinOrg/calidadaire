@@ -1,10 +1,10 @@
-1- Me logie con usuario y clave en elk portal:
+1- Se ingresa al portal con usuario y clave:
 	siata.gov.co:8018/descarga_siata/index.php/index2/resultadosConsultaEstacionesAire/
 
-2- Seleccione " Estaciones Calidad de Aire" y realize una busqueda desde 1989 hasta la fecha de hoy
-   con todas las estaciones, el resultado son muchas filas de información para descargar.
+2- Seleccionar "Estaciones Calidad de Aire" y se realiza una busqueda desde 1989 hasta la fecha de hoy
+   con todas las estaciones seleccionadas, el resultado son muchas filas de información para descargar.
    En este punto se abre "google chrome developer tools" click derecho/Inspeccionar/Consola
-   y en el cuadro de texto escribi este javascript:
+   y en el cuadro de texto se escribe este javascript:
    document.querySelectorAll('a').forEach(function(me){if(me.href.indexOf('http://siata.gov.co:8018/descarga_siata') != -1 && me.href.indexOf('.csv') != -1) console.log(me.href)})
 
 3- El resultado del paso 2 lo copie en el archivo (ssh/1-download-csv.sh):
