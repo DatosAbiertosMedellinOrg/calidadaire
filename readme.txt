@@ -5,6 +5,7 @@
    con todas las estaciones seleccionadas, el resultado son muchas filas de información para descargar.
    En este punto se abre "google chrome developer tools" click derecho/Inspeccionar/Consola
    y en el cuadro de texto se escribe este javascript:
+
    document.querySelectorAll('a').forEach(function(me){if(me.href.indexOf('http://siata.gov.co:8018/descarga_siata') != -1 && me.href.indexOf('.csv') != -1) console.log(me.href)})
 
 3- El resultado del paso 2 lo copie en el archivo (ssh/1-download-csv.sh):
