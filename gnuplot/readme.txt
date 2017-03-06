@@ -8,6 +8,6 @@ Linux/Ubuntu/Debian
 $ sudo apt-get install gnuplot
 
 
-El archivo "generador-graficas" genera todas las gráficas el
+El archivo "generador-graficas.sh" genera todas las gráficas en
 la carpeta "graficas" y se ejecute desde la linea de comandos:
 $ sh generador-graficas.sh
