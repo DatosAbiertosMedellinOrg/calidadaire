@@ -21,39 +21,32 @@
    Esto descarga todos los archivos al computador.
 
 4. Despues se creo una script de base de datos (3-mysqlimport.sh),los pasos fueron los siguientes "importante la ruta debe ser absulta o mysql falla":
-   * se abre la consola de linux y se ingresa al directorio donde estan los csv:
-   * `>>$ ls -all`
-   * luego con un editor de texto se antepone los comandos de mysql (El computador debe tener instalado mysql para poder hacer esto) y creada la base de datos "siata" y la tabla "estacion_data_calidadaire"
-   `mysql --local-infile -u root -p'password' -e "use siata; LOAD DATA LOCAL INFILE './estacion_data_calidadaire_11_20080401_20080430.csv' INTO TABLE estacion_data_calidadaire FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"`
-   * este archivo se guarda como sh y se ejecuta igual que el otro
-   * `>>$ sh 3-mysqlimport.sh`
+   * se abre la consola de linux y se ingresa al directorio donde estan los csv: `>>$ ls -all`
    
-  con esto queda una tabla de mas o menos un millon de filas.
+   * luego con un editor de texto se antepone los comandos de mysql (El computador debe tener instalado mysql para poder hacer esto) y creada la base de datos "siata" y la tabla "estacion_data_calidadaire".
 
-5. Una vez se revisa la info de esta tabla se puede notar que los datos quedaron mal ingresados y es porque los
-   csv's tienen un problema de nombre de campos que se desplazan de izquierda a derecha los datos quedan mal
-   para solcionar esto, primero se copia una fila como insert(query_1):
+   `mysql --local-infile -u root -p'password' -e "use siata; LOAD DATA LOCAL INFILE './estacion_data_calidadaire_11_20080401_20080430.csv' INTO TABLE estacion_data_calidadaire FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n'"`
 
-   ```sql
-   INSERT INTO estacion_data_calidadaire (codigoSerial, pm25, calidad_pm25, pm10, calidad_pm10, pm1, calidad_pm1, no, calidad_no, no2, calidad_no2, nox, calidad_nox, ozono, calidad_ozono, co, calidad_co, so2, calidad_so2, pst, calidad_pst, dviento_ssr, calidad_dviento_ssr, haire10_ssr, calidad_haire10_ssr, p_ssr, calidad_p_ssr, pliquida_ssr, calidad_pliquida_ssr, rglobal_ssr, calidad_rglobal_ssr, taire10_ssr, calidad_taire10_ssr, vviento_ssr, calidad_vviento_ssr) VALUES ('0000-00-00 00:00:00', 'codigoSerial', 'pm25', 'calidad_pm25', 'pm10', 'calidad_pm10', 'pm1', 'calidad_pm1', 'no', 'calidad_no', 'no2', 'calidad_no2', 'nox', 'calidad_nox', 'ozono', 'calidad_ozono', 'co', 'calidad_co', 'so2', 'calidad_so2', 'pst', 'calidad_pst', 'dviento_ssr', 'calidad_dviento_ssr', 'haire10_ssr', 'calidad_haire10_ssr', 'p_ssr', 'calidad_p_ssr', 'pliquida_ssr', 'calidad_pliquida_ssr', 'rglobal_ssr', 'calidad_rglobal_ssr', 'taire10_ssr', 'calidad_taire10_ssr', 'vviento_ssr');
+   * este archivo se guarda como sh y se ejecuta igual que el otro `>>$ sh 3-mysqlimport.sh` con esto queda una tabla de mas o menos un millon de filas.
+
+5. Una vez se revisa la info de esta tabla se puede notar que los datos quedaron mal ingresados y es porque los csv tienen un problema de nombre de campos que se desplazan de izquierda a derecha los datos quedan mal. Para solcionar esto, primero se copia una fila como insert (query_1):
+
+   ```
+   INSERT INTO estacion_data_calidadaire (codigoSerial, pm25, calidad_pm25, pm10, calidad_pm10, pm1, calidad_pm1, no, calidad_no, no2, calidad_no2, nox, calidad_nox, ozono, calidad_ozono, co, calidad_co, so2, calidad_so2, pst, calidad_pst, dviento_ssr, calidad_dviento_ssr, haire10_ssr, calidad_haire10_ssr, p_ssr, calidad_p_ssr, pliquida_ssr, calidad_pliquida_ssr, rglobal_ssr, calidad_rglobal_ssr, taire10_ssr, calidad_taire10_ssr, vviento_ssr, calidad_vviento_ssr)
+   VALUES ('0000-00-00 00:00:00', 'codigoSerial', 'pm25', 'calidad_pm25', 'pm10', 'calidad_pm10', 'pm1', 'calidad_pm1', 'no', 'calidad_no', 'no2', 'calidad_no2', 'nox', 'calidad_nox', 'ozono', 'calidad_ozono', 'co', 'calidad_co', 'so2', 'calidad_so2', 'pst', 'calidad_pst', 'dviento_ssr', 'calidad_dviento_ssr', 'haire10_ssr', 'calidad_haire10_ssr', 'p_ssr', 'calidad_p_ssr', 'pliquida_ssr', 'calidad_pliquida_ssr', 'rglobal_ssr', 'calidad_rglobal_ssr', 'taire10_ssr', 'calidad_taire10_ssr', 'vviento_ssr');
   ```
 
-	* depues se borran todas ls filas que tengan esos datos, ya que cada arhivo contiene el nombre de los campos:
-  `DELETE FROM estacion_data_calidadaire WHERE pm25 = 'codigoSerial'`
-
+	* después se borran todas ls filas que tengan esos datos, ya que cada arhivo contiene el nombre de los campos: `DELETE FROM estacion_data_calidadaire WHERE pm25 = 'codigoSerial';`
 	* luego se inserta solo una vez el "query_1"
 
-  ```sql
+  ```
   INSERT INTO estacion_data_calidadaire (codigoSerial, pm25, calidad_pm25, pm10, calidad_pm10, pm1, calidad_pm1, no, calidad_no, no2, calidad_no2, nox, calidad_nox, ozono, calidad_ozono, co, calidad_co, so2, calidad_so2, pst, calidad_pst, dviento_ssr, calidad_dviento_ssr, haire10_ssr, calidad_haire10_ssr, p_ssr, calidad_p_ssr, pliquida_ssr, calidad_pliquida_ssr, rglobal_ssr, calidad_rglobal_ssr, taire10_ssr, calidad_taire10_ssr, vviento_ssr, calidad_vviento_ssr) VALUES	('0000-00-00 00:00:00', 'codigoSerial', 'pm25', 'calidad_pm25', 'pm10', 'calidad_pm10', 'pm1', 'calidad_pm1', 'no', 'calidad_no', 'no2', 'calidad_no2', 'nox', 'calidad_nox', 'ozono', 'calidad_ozono', 'co', 'calidad_co', 'so2', 'calidad_so2', 'pst', 'calidad_pst', 'dviento_ssr', 'calidad_dviento_ssr', 'haire10_ssr', 'calidad_haire10_ssr', 'p_ssr', 'calidad_p_ssr', 'pliquida_ssr', 'calidad_pliquida_ssr', 'rglobal_ssr', 'calidad_rglobal_ssr', 'taire10_ssr', 'calidad_taire10_ssr', 'vviento_ssr');
 ```
 
-	* se ejecuta el select:
-
-	* `SELECT * FROM estacion_data_calidadaire_test ORDER BY pm25 DESC;`
+	* se ejecuta el select: `SELECT * FROM estacion_data_calidadaire_test ORDER BY pm25 DESC;`
 	
-  y se descarga en formato csv el resultado de este select, se le borra la primara linea que contiene los campos malos
-	
-  **** luego importe este csv en una nueva tabla algo como: `fix_estacion_calidadaire`
+  * se descarga en formato csv el resultado de este select, se le borra la primara linea que contiene los campos malos.
+  * importe este csv en una nueva tabla algo como: `fix_estacion_calidadaire`.
 
 6. Para filtrar mas la informacion se ejecutaron select desde la suposición que el valor "-9999.0" es un error para el campo pm25 y pm10
 
